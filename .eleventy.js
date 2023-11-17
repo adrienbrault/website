@@ -3,7 +3,48 @@ const { DateTime } = require("luxon");
 const syntaxHighlight = require("@11ty/eleventy-plugin-syntaxhighlight");
 const htmlmin = require("html-minifier");
 
+const markdownIt = require('markdown-it');
+const markdownItEleventyImg = require("markdown-it-eleventy-img");
+
+const path = require('node:path'); 
+
 module.exports = function (eleventyConfig) {
+  eleventyConfig.setLibrary('md', markdownIt ({
+    html: true,
+    breaks: true,
+    linkify: true
+  })
+  .use(markdownItEleventyImg, {
+    imgOptions: {
+      widths: [800, 500, 300, null],
+      urlPath: "/static/images/",
+      outputDir: path.join("_site", "static", "images"),
+      formats: ["avif", "webp", "jpeg"]
+    },
+    globalAttributes: {
+      class: "markdown-image",
+      decoding: "async",
+      // If you use multiple widths,
+      // don't forget to add a `sizes` attribute.
+      sizes: "100vw"
+    },
+    resolvePath: (filepath, env) => path.join("src", filepath),
+    renderImage(image, attributes) {
+      const [ Image, options ] = image;
+      const [ src, attrs ] = attributes;
+
+      // Generate the image markup with eleventy-img
+      Image(src, options);
+      const metadata = Image.statsSync(src, options);
+      const imageMarkup = Image.generateHTML(metadata, attrs, {
+        whitespaceMode: "inline"
+      });
+
+      // Wrap the imageMarkup in an anchor tag that links to the full-size image
+      return `<a href="${metadata.avif.at(-1).url}" target="_blank" rel="noopener noreferrer">${imageMarkup}</a>`;
+    }
+  }));
+
   // Disable automatic use of your .gitignore
   eleventyConfig.setUseGitIgnore(false);
 
