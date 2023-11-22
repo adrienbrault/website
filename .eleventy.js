@@ -6,6 +6,8 @@ const htmlmin = require("html-minifier");
 const markdownIt = require('markdown-it');
 const markdownItEleventyImg = require("markdown-it-eleventy-img");
 
+const socialImages = require("@11tyrocks/eleventy-plugin-social-images");
+
 const path = require('node:path'); 
 
 module.exports = function (eleventyConfig) {
@@ -60,6 +62,8 @@ module.exports = function (eleventyConfig) {
 
   // Syntax Highlighting for Code blocks
   eleventyConfig.addPlugin(syntaxHighlight);
+
+  eleventyConfig.addPlugin(socialImages);
 
   // To Support .yaml Extension in _data
   // You may remove this if you can use JSON
