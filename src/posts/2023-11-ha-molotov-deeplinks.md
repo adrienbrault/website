@@ -1,7 +1,10 @@
 ---
 title: Using Alexa to change the Molotov.tv channel
+description: In this article, I detail my journey of integrating Alexa for channel control on Molotov.tv, using an Nvidia Shield Android TV. I'll guide you through each step, starting from the initial challenge of navigating channel selection, to the ultimate solution achieved with Home Assistant.
 date: 2023-11-22
 ---
+
+> {{ description }}
 
 We use [Molotov.tv](https://www.molotov.tv) on our Nvidia Shield Android TV to watch Live TV and program replays.
 The application home screen isn't a list of channels, but a list of programs. The list of channels to watch live TV are in a separate menu.
